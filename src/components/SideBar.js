@@ -14,10 +14,12 @@ import React from "react";
 import styled from "styled-components";
 import SidebarOption from "./SidebarOption";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { db } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const SideBar = () => {
   const [channels, loading, error] = useCollection(db.collection("rooms"));
+  const [user] = useAuthState(auth);
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -25,7 +27,7 @@ const SideBar = () => {
           <h2>ET PRODUCTION</h2>
           <h3>
             <FiberManualRecordIcon />
-            Saeed ET
+            {user?.displayName}
           </h3>
         </SidebarInfo>
         <CreateIcon />
@@ -57,7 +59,7 @@ const SidebarContainer = styled.div`
   flex: 0.3;
   border-top: 1px solid #49274b;
   max-width: 260px;
-  /* margin-top: 60px; */
+  margin-top: 60px;
 
   > hr {
     margin: 10px 0;
